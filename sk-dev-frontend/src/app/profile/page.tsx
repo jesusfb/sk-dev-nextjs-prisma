@@ -44,9 +44,9 @@ const ProfilePage = () => {
 								<span className="font-normal">{userStore.user.email}</span>
 							</p>
 							<p className="font-bold">
-								Posts:{' '}
+								Articles:{' '}
 								<span className="font-normal">
-									{userStore.user.posts.length}
+									{userStore.user.articles.length}
 								</span>
 							</p>
 							<p className="font-bold">

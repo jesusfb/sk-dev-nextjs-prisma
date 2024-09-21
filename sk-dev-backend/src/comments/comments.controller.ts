@@ -16,14 +16,18 @@ import { AuthGuard } from 'src/auth/auth.guard';
 export class CommentsController {
   constructor(private readonly commentsService: CommentsService) {}
 
-  @Post(':postId')
+  @Post(':articleId')
   @UseGuards(AuthGuard)
   async createComment(
-    @Param('postId') postId: string,
+    @Param('articleId') articleId: string,
     @GetUserId('id') currentUserId: string,
     @Body('content') content: string,
   ) {
-    return this.commentsService.createComment(postId, currentUserId, content);
+    return this.commentsService.createComment(
+      articleId,
+      currentUserId,
+      content,
+    );
   }
 
   @Patch(':commentId')
@@ -40,9 +44,9 @@ export class CommentsController {
     );
   }
 
-  @Get(':postId')
-  async getCommentsByPost(@Param('postId') postId: string) {
-    return this.commentsService.getCommentsByPost(postId);
+  @Get(':articleId')
+  async getCommentsByArticle(@Param('articleId') articleId: string) {
+    return this.commentsService.getCommentsByArticle(articleId);
   }
 
   @Delete(':commentId')

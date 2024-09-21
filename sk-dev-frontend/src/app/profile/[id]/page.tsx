@@ -30,7 +30,7 @@ const ProfilePage = async ({ params: { id } }: { params: { id: string } }) => {
 								Email: <span className="font-normal">{data.email}</span>
 							</p>
 							<p className="font-bold">
-								Posts: <span className="font-normal">{data.posts.length}</span>
+								Articles: <span className="font-normal">{data.articles.length}</span>
 							</p>
 							<p className="font-bold">
 								Likes: <span className="font-normal">{data.likes.length}</span>

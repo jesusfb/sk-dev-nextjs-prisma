@@ -7,7 +7,7 @@ export interface UserData {
 	bio?: string;
 	avatar?: string;
 
-	posts: Array<any>;
+	articles: Array<any>;
 	likes: Array<any>;
 	comments: Array<any>;
 	followers: Array<any>;

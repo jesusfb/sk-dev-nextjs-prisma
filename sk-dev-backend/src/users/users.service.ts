@@ -30,7 +30,7 @@ export class UsersService {
     const user = await this.prisma.user.findUnique({
       where: { id },
       include: {
-        posts: true,
+        articles: true,
         comments: true,
         likes: true,
         followers: true,

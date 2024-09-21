@@ -5,10 +5,10 @@ import { PrismaService } from '../prisma/prisma.service';
 export class LikesService {
   constructor(private prisma: PrismaService) {}
 
-  async togglePostLike(postId: string, userId: string): Promise<any> {
+  async togglePostLike(articleId: string, userId: string): Promise<any> {
     const existingLike = await this.prisma.like.findFirst({
       where: {
-        postId,
+        articleId,
         userId,
       },
     });
@@ -23,7 +23,7 @@ export class LikesService {
     } else {
       await this.prisma.like.create({
         data: {
-          postId,
+          articleId,
           userId,
         },
       });
@@ -58,9 +58,9 @@ export class LikesService {
     }
   }
 
-  async getPostLikes(postId: string) {
+  async getArticleLikes(articleId: string) {
     return this.prisma.like.findMany({
-      where: { postId },
+      where: { articleId },
     });
   }
 

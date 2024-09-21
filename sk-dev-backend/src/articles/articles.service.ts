@@ -1,34 +1,34 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import slugify from 'slugify';
-import { Post, Prisma } from '@prisma/client';
+import { Article, Prisma } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { CreatePostDto } from './dto/create-post.dto';
-import { UpdatePostDto } from './dto/update-post.dto';
+import { CreateArticleDto } from './dto/create-article.dto';
+import { UpdateArticleDto } from './dto/update-article.dto';
 
 @Injectable()
-export class PostsService {
+export class ArticlesService {
   constructor(private readonly prisma: PrismaService) {}
 
   async create(
     currentUserId: string,
-    createPostDto: CreatePostDto,
-  ): Promise<Post> {
-    const post = await this.prisma.post.create({
+    createArticleDto: CreateArticleDto,
+  ): Promise<Article> {
+    const article = await this.prisma.article.create({
       data: {
-        ...createPostDto,
-        slug: this.getSlug(createPostDto.title),
+        ...createArticleDto,
+        slug: this.getSlug(createArticleDto.title),
         author: {
           connect: { id: currentUserId },
         },
       },
     });
 
-    return post;
+    return article;
   }
 
-  async findAll(query: any): Promise<Post[]> {
+  async findAll(query: any): Promise<Article[]> {
     try {
-      const conditions: Prisma.PostWhereInput = {};
+      const conditions: Prisma.ArticleWhereInput = {};
 
       const take = query.limit ? parseInt(query.limit, 10) : undefined;
       const skip = query.offset ? parseInt(query.offset, 10) : undefined;
@@ -49,19 +49,19 @@ export class PostsService {
         };
       }
 
-      return await this.prisma.post.findMany({
+      return await this.prisma.article.findMany({
         where: conditions,
         orderBy: { createdAt: 'desc' },
         take,
         skip,
       });
     } catch (error) {
-      throw new HttpException('Posts not found', HttpStatus.NOT_FOUND);
+      throw new HttpException('Articles not found', HttpStatus.NOT_FOUND);
     }
   }
 
-  async getPostBySlug(slug: string) {
-    const post = await this.prisma.post.findFirstOrThrow({
+  async getBySlug(slug: string) {
+    const article = await this.prisma.article.findFirstOrThrow({
       where: { slug },
       include: {
         author: true,
@@ -69,51 +69,51 @@ export class PostsService {
       },
     });
 
-    if (!post) {
-      throw new HttpException('Post not found', HttpStatus.NOT_FOUND);
+    if (!article) {
+      throw new HttpException('Article not found', HttpStatus.NOT_FOUND);
     }
 
-    delete post.author.password;
-    return post;
+    delete article.author.password;
+    return article;
   }
 
   async update(
     id: string,
-    updatePostDto: UpdatePostDto,
+    updateArticleDto: UpdateArticleDto,
     currentUserId: string,
   ) {
-    const post = await this.prisma.post.findUnique({ where: { id } });
+    const article = await this.prisma.article.findUnique({ where: { id } });
 
-    if (post.authorId !== currentUserId) {
+    if (article.authorId !== currentUserId) {
       throw new HttpException('You are not an author', HttpStatus.FORBIDDEN);
     }
 
     try {
-      return await this.prisma.post.update({
+      return await this.prisma.article.update({
         where: { id },
-        data: updatePostDto,
+        data: updateArticleDto,
       });
     } catch (error) {
-      throw new HttpException('Post not found', HttpStatus.NOT_FOUND);
+      throw new HttpException('Article not found', HttpStatus.NOT_FOUND);
     }
   }
 
   async remove(id: string, currentUserId: string) {
     try {
-      const post = await this.prisma.post.findUnique({ where: { id } });
+      const article = await this.prisma.article.findUnique({ where: { id } });
 
-      if (currentUserId !== post.authorId) {
+      if (currentUserId !== article.authorId) {
         throw new HttpException('You are not an author', HttpStatus.FORBIDDEN);
       }
 
-      await this.prisma.post.delete({
+      await this.prisma.article.delete({
         where: { id },
       });
 
-      return { message: 'Post deleted successfully', status: HttpStatus.OK };
+      return { message: 'Article deleted successfully', status: HttpStatus.OK };
     } catch (error) {
       if (error.name === 'NotFoundError') {
-        throw new HttpException('Post not found', HttpStatus.NOT_FOUND);
+        throw new HttpException('Articles not found', HttpStatus.NOT_FOUND);
       }
       return error;
     }

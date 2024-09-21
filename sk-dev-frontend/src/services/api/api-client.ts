@@ -20,48 +20,48 @@ export const Api = {
 		return axiosInstance.get(`${ApiRoutes.USERS}/${id}`);
 	},
 
-	//POSTS
+	//Articles
 
-	getPosts: () => {
-		return axiosInstance.get(ApiRoutes.POSTS);
+	getArticles: () => {
+		return axiosInstance.get(ApiRoutes.ARTICLES);
 	},
 
-	getPost: (slug: string) => {
-		return axiosInstance.get(`${ApiRoutes.POSTS}/${slug}`);
+	getArticle: (slug: string) => {
+		return axiosInstance.get(`${ApiRoutes.ARTICLES}/${slug}`);
 	},
 
-	createPost: (data: {
+	createArticle: (data: {
 		title: string;
 		content: string;
 		image: string;
 		description: string;
 	}) => {
-		return axiosInstance.post(ApiRoutes.POSTS, data);
+		return axiosInstance.post(ApiRoutes.ARTICLES, data);
 	},
 
-	updatePost: (
+	updateArticle: (
 		id: string,
 		data: { title: string; content: string; image: string; description: string }
 	) => {
-		return axiosInstance.patch(`${ApiRoutes.POSTS}/${id}`, data);
+		return axiosInstance.patch(`${ApiRoutes.ARTICLES}/${id}`, data);
 	},
 
-	deletePost: (id: string) => {
-		return axiosInstance.delete(`${ApiRoutes.POSTS}/${id}`);
+	deleteArticle: (id: string) => {
+		return axiosInstance.delete(`${ApiRoutes.ARTICLES}/${id}`);
 	},
 
 	//COMMENTS
 
-	createComment: (postId: string, data: { content: string }) => {
-		return axiosInstance.post(`${ApiRoutes.COMMENTS}/${postId}`, data);
+	createComment: (articleId: string, data: { content: string }) => {
+		return axiosInstance.post(`${ApiRoutes.COMMENTS}/${articleId}`, data);
 	},
 
 	editComment: (id: string, data: { content: string }) => {
 		return axiosInstance.patch(`${ApiRoutes.COMMENTS}/${id}`, data);
 	},
 
-	getCommentsByPostId: (postId: string) => {
-		return axiosInstance.get(`${ApiRoutes.COMMENTS}/${postId}`);
+	getCommentsByArticleId: (articleId: string) => {
+		return axiosInstance.get(`${ApiRoutes.COMMENTS}/${articleId}`);
 	},
 
 	deleteComment: (id: string) => {
@@ -70,15 +70,15 @@ export const Api = {
 
 	//LIKES
 
-	likePost: (id: string) => {
-		return axiosInstance.post(`${ApiRoutes.LIKES_POST}/${id}`);
+	likeArticle: (id: string) => {
+		return axiosInstance.post(`${ApiRoutes.LIKES_ARTICLE}/${id}`);
 	},
 
 	likeComment: (id: string) => {
 		return axiosInstance.post(`${ApiRoutes.LIKES_COMMENT}/${id}`);
 	},
 
-	getPostLikes: (postId: string) => {
-		return axiosInstance.get(`${ApiRoutes.LIKES_POST}/${postId}`);
+	getArticleLikes: (articleId: string) => {
+		return axiosInstance.get(`${ApiRoutes.LIKES_ARTICLE}/${articleId}`);
 	},
 };

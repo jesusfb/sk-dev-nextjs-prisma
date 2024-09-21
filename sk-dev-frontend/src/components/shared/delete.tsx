@@ -29,8 +29,8 @@ export const Delete = ({
 	const onDelete = async () => {
 		if (type === 'post') {
 			try {
-				await Api.deletePost(id);
-				router.push('/posts');
+				await Api.deleteArticle(id);
+				router.push('/articles');
 			} catch (error) {
 				console.log(error);
 			}

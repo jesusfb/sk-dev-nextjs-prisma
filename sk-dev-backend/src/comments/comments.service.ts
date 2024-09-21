@@ -5,18 +5,20 @@ import { PrismaService } from '../prisma/prisma.service';
 export class CommentsService {
   constructor(private prisma: PrismaService) {}
 
-  async createComment(postId: string, authorId: string, content: string) {
+  async createComment(articleId: string, authorId: string, content: string) {
     // Перевірка, чи існує пост
-    const post = await this.prisma.post.findUnique({ where: { id: postId } });
-    if (!post) {
-      throw new NotFoundException('Post not found');
+    const article = await this.prisma.article.findUnique({
+      where: { id: articleId },
+    });
+    if (!article) {
+      throw new NotFoundException('Article not found');
     }
 
     // Створення коментаря
     return this.prisma.comment.create({
       data: {
         content,
-        post: { connect: { id: postId } },
+        article: { connect: { id: articleId } },
         author: { connect: { id: authorId } },
       },
     });
@@ -33,9 +35,9 @@ export class CommentsService {
     });
   }
 
-  async getCommentsByPost(postId: string) {
+  async getCommentsByArticle(articleId: string) {
     return this.prisma.comment.findMany({
-      where: { postId },
+      where: { articleId },
       orderBy: { createdAt: 'desc' },
       select: {
         id: true,

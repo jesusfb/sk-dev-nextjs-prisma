@@ -14,16 +14,16 @@ import { GetUserId } from 'src/users/decorators/userId.decorator';
 export class LikesController {
   constructor(private readonly likesService: LikesService) {}
 
-  @Post('posts/:postId')
+  @Post('articles/:articleId')
   @UseGuards(AuthGuard)
   async togglePostLike(
-    @Param('postId') postId: string,
+    @Param('articleId') articleId: string,
     @GetUserId('id') currentUserId: string,
   ): Promise<any> {
-    return await this.likesService.togglePostLike(postId, currentUserId);
+    return await this.likesService.togglePostLike(articleId, currentUserId);
   }
 
-  @Post('comment/:commentId')
+  @Post('comments/:commentId')
   @UseGuards(AuthGuard)
   async toggleCommentLike(
     @Param('commentId') commentId: string,
@@ -32,9 +32,9 @@ export class LikesController {
     return await this.likesService.toggleCommentLike(commentId, currentUserId);
   }
 
-  @Get('posts/:postId')
-  getPostLikes(@Param('postId') postId: string) {
-    return this.likesService.getPostLikes(postId);
+  @Get('articles/:articleId')
+  getArticleLikes(@Param('articleId') articleId: string) {
+    return this.likesService.getArticleLikes(articleId);
   }
 
   @Get('comments/:commentId')

@@ -8,22 +8,22 @@ import useSWR from 'swr';
 import CommentItem from './comment-item';
 import { Button } from '@/components/ui/button';
 
-const fetcher = async (postId: string) => {
-	const { data } = await Api.getCommentsByPostId(postId);
+const fetcher = async (articleId: string) => {
+	const { data } = await Api.getCommentsByArticleId(articleId);
 	return data;
 };
 
-export const Comments = ({ postId }: { postId: string }) => {
+export const Comments = ({ articleId }: { articleId: string }) => {
 	const [comment, setComment] = useState('');
 	const { accessToken } = useAuthStore();
 
-	const { data, mutate } = useSWR('comments', () => fetcher(postId));
+	const { data, mutate } = useSWR('comments', () => fetcher(articleId));
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		if (accessToken) {
 			try {
-				await Api.createComment(postId, { content: comment });
+				await Api.createComment(articleId, { content: comment });
 				mutate();
 				setComment('');
 			} catch (error) {

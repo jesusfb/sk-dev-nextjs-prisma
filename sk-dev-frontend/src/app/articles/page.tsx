@@ -1,24 +1,24 @@
 import { Api } from '@/services/api/api-client';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { PostList } from '@/components/shared';
+import { ArticleList } from '@/components/shared';
 
 
 
-const PostsPage = async () => {
-	const { data } = await Api.getPosts();
+const ArticlesPage = async () => {
+	const { data } = await Api.getArticles();
 
 	return (
 		<div className="container mx-auto py-12 flex flex-col gap-8">
 			<div className="flex justify-between items-center">
-				<h1 className="text-4xl font-bold">Posts</h1>
-				<Link href="/posts/create">
+				<h1 className="text-4xl font-bold">Articles</h1>
+				<Link href="/articles/create">
 					<Button variant="link">Create</Button>
 				</Link>
 			</div>
-			<PostList initialData={data} />
+			<ArticleList initialData={data} />
 		</div>
 	);
 };
 
-export default PostsPage;
+export default ArticlesPage;

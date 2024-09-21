@@ -1,24 +1,19 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import TinyMCEEditor from '@/components/shared/editor';
 import { Api } from '@/services/api/api-client';
 import { Button } from '@/components/ui/button';
 import { Loader2 } from 'lucide-react';
-import { useRouter, useParams, redirect } from 'next/navigation';
-import { ApiRoutes } from '@/services/api/constants';
+import { useRouter } from 'next/navigation';
 
-const EditPostPage = () => {
+const CreateArticlePage = () => {
 	const router = useRouter();
-	const params = useParams();
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const [editorContent, setEditorContent] = useState('');
 	const [title, setTitle] = useState('');
 	const [image, setImage] = useState('');
 	const [description, setDescription] = useState('');
-	const [postId, setPostId] = useState<string>('');
-
-	const slug = params.slug as string;
 
 	const handleEditorChange = (content: any) => {
 		setEditorContent(content);
@@ -27,34 +22,23 @@ const EditPostPage = () => {
 	const handleSubmit = async () => {
 		try {
 			setIsSubmitting(true);
-			await Api.updatePost(postId, {
+			await Api.createArticle({
 				title,
 				content: editorContent,
 				image,
 				description,
 			});
-			router.push(ApiRoutes.POSTS + '/' + slug);
+			router.push('/articles');
 		} catch (error) {
-			console.error('Create post failed:', error);
+			console.error('Create article failed:', error);
 		} finally {
 			setIsSubmitting(false);
 		}
 	};
 
-	useEffect(() => {
-		Api.getPost(slug).then((res) => {
-			console.log(res);
-			setEditorContent(res.data.content);
-			setTitle(res.data.title);
-			setImage(res.data.image);
-			setDescription(res.data.description);
-			setPostId(res.data.id);
-		});
-	}, []);
-
 	return (
 		<div className="container mx-auto p-4 flex flex-col items-center justify-center min-h-screen">
-			<h1 className="text-5xl font-bold mb-12">Create new post</h1>
+			<h1 className="text-5xl font-bold mb-12">Create new article</h1>
 			<form
 				className="flex flex-col gap-6 w-full max-w-full"
 				onSubmit={(e) => {
@@ -72,7 +56,6 @@ const EditPostPage = () => {
 								id=""
 								className="w-full px-4 py-2 rounded-md border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-300"
 								onChange={(e) => setTitle(e.target.value)}
-								value={title}
 							/>
 						</label>
 						<label className="flex flex-col gap-2">
@@ -110,11 +93,11 @@ const EditPostPage = () => {
 						/>
 					</div>
 				</div>
-				<Button type="submit" variant="default" disabled={isSubmitting} className='dark:text-white'>
+				<Button type="submit" variant="default" disabled={isSubmitting}>
 					{isSubmitting ? (
 						<Loader2 className="mr-2 h-4 w-4 animate-spin" />
 					) : (
-						'Save'
+						'Create'
 					)}
 				</Button>
 			</form>
@@ -122,4 +105,4 @@ const EditPostPage = () => {
 	);
 };
 
-export default EditPostPage;
+export default CreateArticlePage;

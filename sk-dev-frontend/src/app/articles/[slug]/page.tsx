@@ -1,18 +1,18 @@
 import { Api } from '@/services/api/api-client';
 import Link from 'next/link';
-import ClientArticle from './post.client';
+import ClientArticle from './article.client';
 import { notFound } from 'next/navigation';
 import { Comments, Delete } from '@/components/shared';
 import Likes from '@/components/shared/likes';
 import { Button } from '@/components/ui/button';
 
-interface PostPageParams {
+interface ArticlePageParams {
 	slug: string;
 }
 
 // Зверніть увагу на типізацію параметрів
-export default async function PostPage({ params }: { params: PostPageParams }) {
-	const { data } = await Api.getPost(params.slug).catch((err) => {
+export default async function ArticlePage({ params }: { params: ArticlePageParams }) {
+	const { data } = await Api.getArticle(params.slug).catch((err) => {
 		return { data: null };
 	});
 
@@ -26,13 +26,13 @@ export default async function PostPage({ params }: { params: PostPageParams }) {
 				<div className="flex justify-between">
 					<div className="flex flex-col">
 						<Link
-							href="/posts"
+							href="/articles"
 							className="text-blue-500 hover:underline mb-4 block"
 						>
-							&larr; Back to posts
+							&larr; Back to articles
 						</Link>
 						<Link
-							href={`/posts/edit/${data?.slug}`}
+							href={`/articles/edit/${data?.slug}`}
 							className="text-blue-500 hover:underline"
 						>
 							Edit
@@ -60,7 +60,7 @@ export default async function PostPage({ params }: { params: PostPageParams }) {
 
 			<div className="prose prose-lg">
 				<ClientArticle content={data?.content} />
-				<Comments postId={data?.id} />
+				<Comments articleId={data?.id} />
 			</div>
 		</div>
 	);

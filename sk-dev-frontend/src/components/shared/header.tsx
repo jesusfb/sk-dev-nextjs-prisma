@@ -16,8 +16,8 @@ const ROUTES = [
 	// 	path: '/category',
 	// },
 	{
-		label: 'Posts',
-		path: '/posts',
+		label: 'Articles',
+		path: '/articles',
 	},
 ];
 

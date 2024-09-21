@@ -17,7 +17,7 @@ export const useUserStore = create<UserState>()((set) => ({
 		bio: '',
 		avatar: '',
 
-		posts: [],
+		articles: [],
 		likes: [],
 		comments: [],
 		followers: [],

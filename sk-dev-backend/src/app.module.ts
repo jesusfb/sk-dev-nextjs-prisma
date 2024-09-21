@@ -2,7 +2,7 @@ import { MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
 import { AuthMiddleware } from './auth/auth.middleware';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
-import { PostsModule } from './posts/posts.module';
+import { ArticlesModule } from './articles/articles.module';
 import { CommentsModule } from './comments/comments.module';
 import { LikesModule } from './likes/likes.module';
 import { FollowsModule } from './follows/follows.module';
@@ -11,7 +11,7 @@ import { FollowsModule } from './follows/follows.module';
   imports: [
     AuthModule,
     UsersModule,
-    PostsModule,
+    ArticlesModule,
     CommentsModule,
     LikesModule,
     FollowsModule,

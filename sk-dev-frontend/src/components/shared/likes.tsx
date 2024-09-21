@@ -9,7 +9,7 @@ type Like = {
 	commentId: string;
 	createdAt: string;
 	id: string;
-	postId: string;
+	articleId: string;
 	userId: string;
 };
 
@@ -18,7 +18,7 @@ interface LikeProps {
 }
 
 const fetcher = async (id: string) => {
-	const { data } = await Api.getPostLikes(id);
+	const { data } = await Api.getArticleLikes(id);
 	return data;
 };
 
@@ -29,15 +29,15 @@ const Likes = ({ id }: LikeProps) => {
 	const [isLiked, setIsLiked] = useState(liked);
 	const [likesCount, setLikesCount] = useState(data?.length);
 
-	const toggleLikePost = async () => {
-		await Api.likePost(id);
+	const toggleLikeArticle = async () => {
+		await Api.likeArticle(id);
 		mutate();
 	};
 
 	useEffect(() => {
 		setIsLiked(liked);
 		setLikesCount(data?.length);
-	}, [liked]);
+	}, [data?.length, liked]);
 
 	if (!data) {
 		return null;
@@ -49,13 +49,13 @@ const Likes = ({ id }: LikeProps) => {
 				<HeartPulse
 					size={21}
 					className="cursor-pointer text-red-500 hover:scale-110 transition-all"
-					onClick={toggleLikePost}
+					onClick={toggleLikeArticle}
 				/>
 			) : (
 				<Heart
 					size={21}
 					className="cursor-pointer hover:scale-x-110 transition-all"
-					onClick={toggleLikePost}
+					onClick={toggleLikeArticle}
 				/>
 			)}
 			{likesCount}

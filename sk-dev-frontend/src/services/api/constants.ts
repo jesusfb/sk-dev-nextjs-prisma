@@ -3,9 +3,9 @@ export enum ApiRoutes {
 	REGISTER = '/auth/register',
 	USER_PROFILE = '/users/current',
 	USERS = '/users',
-	POSTS = '/posts',
+	ARTICLES = '/articles',
 	COMMENTS = '/comments',
 	LIKES = '/likes',
-	LIKES_POST = '/likes/posts',
-	LIKES_COMMENT = '/likes/comment',
+	LIKES_ARTICLE = '/likes/articles',
+	LIKES_COMMENT = '/likes/comments',
 }

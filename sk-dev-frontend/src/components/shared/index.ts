@@ -6,4 +6,4 @@ export { ModeToggle } from './mode-toggle';
 export { Comments } from './comments';
 export { Modal } from './modal';
 export { Delete } from './delete';
-export { PostList } from './post-list';
+export { ArticleList } from './article-list';
