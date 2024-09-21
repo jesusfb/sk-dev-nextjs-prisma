@@ -1,0 +1,67 @@
+import { Api } from '@/services/api/api-client';
+import Link from 'next/link';
+import ClientArticle from './post.client';
+import { notFound } from 'next/navigation';
+import { Comments, Delete } from '@/components/shared';
+import Likes from '@/components/shared/likes';
+import { Button } from '@/components/ui/button';
+
+interface PostPageParams {
+	slug: string;
+}
+
+// Зверніть увагу на типізацію параметрів
+export default async function PostPage({ params }: { params: PostPageParams }) {
+	const { data } = await Api.getPost(params.slug).catch((err) => {
+		return { data: null };
+	});
+
+	if (!data) {
+		return notFound();
+	}
+
+	return (
+		<div className="max-w-5xl mx-auto py-16 px-4">
+			<div className="flex flex-col">
+				<div className="flex justify-between">
+					<div className="flex flex-col">
+						<Link
+							href="/posts"
+							className="text-blue-500 hover:underline mb-4 block"
+						>
+							&larr; Back to posts
+						</Link>
+						<Link
+							href={`/posts/edit/${data?.slug}`}
+							className="text-blue-500 hover:underline"
+						>
+							Edit
+						</Link>
+					</div>
+					<Delete type="post" id={data?.id} authorId={data?.authorId} />
+				</div>
+				<h1 className="text-5xl font-bold mb-4">{data?.title}</h1>
+			</div>
+			<div className="flex items-center justify-between mb-8">
+				<Link href={`/profile/${data?.authorId}`} className="flex gap-1">
+					Author:
+					<div className="text-blue-500 hover:underline">
+						{data?.author?.username}
+					</div>
+				</Link>
+				<div className="flex items-center gap-2">
+					<Likes id={data.id} />
+					{/* <p className="font-bold">
+						{data?.comments.length}{' '}
+						{data?.comments.length === 1 ? 'comment' : 'comments'}
+					</p> */}
+				</div>
+			</div>
+
+			<div className="prose prose-lg">
+				<ClientArticle content={data?.content} />
+				<Comments postId={data?.id} />
+			</div>
+		</div>
+	);
+}

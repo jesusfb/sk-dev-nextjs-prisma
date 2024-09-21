@@ -1,0 +1,59 @@
+services:
+  frontend:
+    build: ./sk-dev-frontend
+    restart: always
+    ports:
+      - '3000:3000'
+    depends_on:
+      - api
+    volumes:
+      - /app/node_modules
+      - ./sk-dev-frontend:/app
+    networks:
+      - app-network
+    env_file:
+      - .env
+
+  api:
+    build: ./sk-dev-backend
+    restart: always
+    ports:
+      - '3001:3001'
+    depends_on:
+      - postgres_db
+    volumes:
+      - /app/node_modules
+      - ./sk-dev-backend:/app
+    networks:
+      - app-network
+    env_file:
+      - .env
+
+  postgres_db:
+    image: postgres
+    restart: always
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+    volumes:
+      - postgres-db-volume:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    networks:
+      - app-network
+
+  adminer:
+    image: adminer:latest
+    restart: always
+    ports:
+      - '8080:8080'
+    networks:
+      - app-network
+
+volumes:
+  postgres-db-volume:
+
+networks:
+  app-network:
+    driver: bridge
